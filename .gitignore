@@ -2,3 +2,4 @@ node_modules/
 lib
 .vscode
 src/config.d.ts
+.history

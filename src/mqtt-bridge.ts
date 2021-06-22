@@ -35,38 +35,42 @@ export class MqttBridge {
     });
     webthingsClient.on('propertyChanged', (device_id, property_name, value) => {
       this.mqttClient?.publish(
-        `webthings/${device_id}/properties/${property_name}`,
+        this.config.mqtt_prefix.concat(`/iotvdev/${device_id}/properties/${property_name}`),
         typeof value !== 'undefined' ? JSON.stringify(value) : ''
       );
     });
     webthingsClient.on('actionTriggered', (device_id, action_name, input) => {
       this.mqttClient?.publish(
-        `webthings/${device_id}/actions/${action_name}`,
+        this.config.mqtt_prefix.concat(`/iotvdev/${device_id}/actions/${action_name}`,
         typeof input !== 'undefined' ? JSON.stringify(input) : ''
       );
     });
     webthingsClient.on('eventRaised', (device_id, event_name, info) => {
       this.mqttClient?.publish(
-        `webthings/${device_id}/events/${event_name}`,
+        this.config.mqtt_prefix.concat(`/iotvdev/${device_id}/events/${event_name}`,
         typeof info !== 'undefined' ? JSON.stringify(info) : ''
       );
     });
     webthingsClient.on('connectState', (device_id, state) => {
       this.mqttClient?.publish(
-        `webthings/${device_id}/connectState`,
+        this.config.mqtt_prefix.concat(`/iotvdev/${device_id}/connectState`,
         JSON.stringify(state)
       );
       if (state) {
-        this.mqttClient?.publish(`webthings/${device_id}/connected`, '');
+        this.mqttClient?.publish(
+          this.config.mqtt_prefix.concat(`/iotvdev/${device_id}/connected`, '');
       } else {
-        this.mqttClient?.publish(`webthings/${device_id}/disconnected`, '');
+        this.mqttClient?.publish(
+          this.config.mqtt_prefix.concat(`/iotvdev/${device_id}/disconnected`, '');
       }
     });
     webthingsClient.on('deviceModified', (device_id) => {
-      this.mqttClient?.publish(`webthings/${device_id}/deviceModified`, '');
+      this.mqttClient?.publish(
+        this.config.mqtt_prefix.concat(`/iotvdev/${device_id}/deviceModified`, '');
     });
     webthingsClient.on('deviceAdded', async (device_id: string) => {
-      this.mqttClient?.publish(`webthings/${device_id}/deviceAdded`, '');
+      this.mqttClient?.publish(
+        this.config.mqtt_prefix.concat(`/iotvdev/${device_id}/deviceAdded`, '');
       if (this.webthingsClient) {
         const device = await this.webthingsClient.getDevice(device_id);
         await this.webthingsClient.subscribeEvents(device, device.events);
@@ -75,8 +79,10 @@ export class MqttBridge {
       }
     });
     webthingsClient.on('deviceRemoved', async (device_id) => {
-      this.mqttClient?.publish(`webthings/${device_id}/deviceRemoved`, '');
-      this.mqttClient?.unsubscribe(`webthings/${device_id}/#`);
+      this.mqttClient?.publish(
+        this.config.mqtt_prefix.concat(`/iotvdev/${device_id}/deviceRemoved`, '');
+      this.mqttClient?.unsubscribe(
+        this.config.mqtt_prefix.concat(`/iotvdev/${device_id}/#`);
     });
 
     try {
@@ -103,7 +109,7 @@ export class MqttBridge {
     if (this.mqttClient) {
       for (const property_name in device.properties) {
         this.mqttClient.subscribe(
-          `webthings/${device.id()}/properties/${property_name}/set`,
+          this.config.mqtt_prefix.concat(`/iotvdev/${device.id()}/properties/${property_name}/set`,
           (err) => {
             if (err) {
               console.log(device.id(), 'property', property_name, ':',
@@ -114,7 +120,7 @@ export class MqttBridge {
       }
       for (const action_name in device.actions) {
         this.mqttClient.subscribe(
-          `webthings/${device.id()}/actions/${action_name}/execute`,
+          this.config.mqtt_prefix.concat(`/iotvdev/${device.id()}/actions/${action_name}/execute`,
           (err) => {
             if (err) {
               console.log(device.id(), 'action', action_name, ':',
@@ -125,7 +131,7 @@ export class MqttBridge {
       }
       for (const property_name in device.properties) {
         this.mqttClient.subscribe(
-          `webthings/${device.id()}/properties/${property_name}/get`,
+          this.config.mqtt_prefix.concat(`/iotvdev/${device.id()}/properties/${property_name}/get`,
           (err) => {
             if (err) {
               console.log(device.id(), 'property', property_name, ':',
@@ -207,7 +213,7 @@ export class MqttBridge {
       const device = await this.webthingsClient.getDevice(device_id);
       const property = device.properties[property_name];
       this.mqttClient?.publish(
-        `webthings/${device_id}/properties/${property_name}`,
+        this.config.mqtt_prefix.concat(`/iotvdev/${device_id}/properties/${property_name}`,
         JSON.stringify(await property.getValue())
       );
     }

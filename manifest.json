@@ -1,13 +1,13 @@
 {
   "manifest_version": 1,
-  "id": "mqtt-bridge",
-  "name": "MQTT Bridge",
-  "short_name": "MQTT",
-  "version": "0.0.2",
-  "description": "Bridge your webthings to MQTT",
-  "homepage_url": "https://github.com/bewee/mqtt-bridge#readme",
+  "id": "iotbox-webthings-mqtt-bridge",
+  "name": "IOTBOX WT MQTT Bridge",
+  "short_name": "IOTWTMQTT",
+  "version": "0.0.4",
+  "description": "Bridge IOTBOX  virtual devices to MQTT",
+  "homepage_url": "https://github.com/iotbox/iotbox-webthings-mqtt-bridge#readme",
   "license": "MPL-2.0",
-  "author": "bewee",
+  "author": "bewee,vlads",
   "gateway_specific_settings": {
     "webthings": {
       "exec": "{nodeLoader} {path}",
@@ -43,6 +43,10 @@
         "mqttbroker_password": {
           "type": "string",
           "title": "Password for authentification against the MQTT broker"
+        },
+        "mqtt_prefix": {
+          "type": "string",
+          "title": "MQTT Prefix"
         }
       }
     }
