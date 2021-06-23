@@ -43,10 +43,6 @@
         "mqttbroker_password": {
           "type": "string",
           "title": "Password for authentification against the MQTT broker"
-        },
-        "mqtt_prefix": {
-          "type": "string",
-          "title": "MQTT Prefix"
         }
       }
     }
